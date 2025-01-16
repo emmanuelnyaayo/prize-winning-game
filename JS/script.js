@@ -44,9 +44,18 @@ const getPlayerNumberChoice = () => {
 };
 
 const formatPlayerNumberChoice = (playerNumberChoice) => {
-    if (playerNumberChoice === null) return false; // User canceled
-    return playerNumberChoice.trim().toLowerCase();
+    if (playerNumberChoice === null) return false; 
+
+    playerNumberChoice = playerNumberChoice.trim();
+
+    if (/^\d+$/.test(playerNumberChoice)) {
+        return playerNumberChoice; 
+    }
+
+    return playerNumberChoice.toLowerCase();
 };
+
+
 
 const evaluatePlayerNumberChoice = (playerNumberChoice) => {
     const wordToDigitMap = {
@@ -62,12 +71,22 @@ const evaluatePlayerNumberChoice = (playerNumberChoice) => {
         ten: 10,
     };
 
-    const number = wordToDigitMap[playerNumberChoice] || parseInt(playerNumberChoice, 10) || false;
-    if (number >= 1 && number <= 10) {
-        return number;
+    const wordNumber = wordToDigitMap[playerNumberChoice];
+
+    if (wordNumber) {
+        return wordNumber;
     }
-    return false; // Return false for invalid or out-of-range input
+
+    if (/^\d+$/.test(playerNumberChoice)) {
+        const number = parseInt(playerNumberChoice, 10);
+        if (number >= 1 && number <= 10) {
+            return number; 
+        }
+    }
+
+    return false; 
 };
+
 
 const decideNotToPlayPrizeWinningGame = () => {
     alert("I guess you changed your mind. Maybe next time.");
